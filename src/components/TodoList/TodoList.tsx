@@ -1,6 +1,12 @@
 import React from 'react';
+import { Todo } from '../../types/Todo';
+import { TodoItem } from '../TodoItem';
 
-export const TodoList: React.FC = () => (
+type Props = {
+  todos: Todo[];
+};
+
+export const TodoList: React.FC<Props> = ({ todos }) => (
   <table className="table is-narrow is-fullwidth">
     <thead>
       <tr>
@@ -16,7 +22,10 @@ export const TodoList: React.FC = () => (
     </thead>
 
     <tbody>
-      <tr data-cy="todo" className="">
+      {todos.map(todo => (
+        <TodoItem todo={todo} key={todo.id} />
+      ))}
+      {/* <tr data-cy="todo" className="">
         <td className="is-vcentered">1</td>
         <td className="is-vcentered" />
         <td className="is-vcentered is-expanded">
@@ -93,8 +102,8 @@ export const TodoList: React.FC = () => (
               <i className="far fa-eye" />
             </span>
           </button>
-        </td>
-      </tr>
+        </td> 
+      </tr>*/}
     </tbody>
   </table>
 );
