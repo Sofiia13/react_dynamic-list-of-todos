@@ -12,10 +12,15 @@ import { Todo } from './types/Todo';
 
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [query, setQuery] = useState('');
 
   useEffect(() => {
     getTodos().then(setTodos);
   }, []);
+
+  const visibleTodos = todos.filter(todo =>
+    todo.title.toLowerCase().includes(query.toLowerCase()),
+  );
 
   return (
     <>
@@ -25,12 +30,12 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter />
+              <TodoFilter query={query} changeQuery={setQuery} />
             </div>
 
             <div className="block">
               {/* <Loader /> */}
-              <TodoList todos={todos} />
+              <TodoList todos={visibleTodos} />
             </div>
           </div>
         </div>
