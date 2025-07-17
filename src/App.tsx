@@ -13,14 +13,31 @@ import { Todo } from './types/Todo';
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [query, setQuery] = useState('');
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
     getTodos().then(setTodos);
   }, []);
 
-  const visibleTodos = todos.filter(todo =>
-    todo.title.toLowerCase().includes(query.toLowerCase()),
-  );
+  const visibleTodos = todos
+    .filter(todo => {
+      if (query) {
+        return todo.title.toLowerCase().includes(query.toLowerCase());
+      }
+
+      return true;
+    })
+    .filter(todo => {
+      if (filter === 'active') {
+        return !todo.completed;
+      }
+
+      if (filter === 'completed') {
+        return todo.completed;
+      }
+
+      return true; 
+    });
 
   return (
     <>
@@ -30,7 +47,7 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter query={query} changeQuery={setQuery} />
+              <TodoFilter query={query} changeQuery={setQuery} setFilter={setFilter} />
             </div>
 
             <div className="block">
