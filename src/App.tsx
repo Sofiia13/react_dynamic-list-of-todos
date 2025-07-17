@@ -6,7 +6,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
-// import { Loader } from './components/Loader';
+import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { Todo } from './types/Todo';
 
@@ -15,9 +15,13 @@ export const App: React.FC = () => {
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState('');
   const [currentTodo, setCurrentTodo] = useState<Todo | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getTodos().then(setTodos);
+    setIsLoading(true);
+    getTodos()
+      .then(setTodos)
+      .finally(() => setIsLoading(false));
   }, []);
 
   const visibleTodos = todos
@@ -56,8 +60,15 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {/* <Loader /> */}
-              <TodoList todos={visibleTodos} getCurrentTodo={setCurrentTodo} />
+              {isLoading ? (
+                <Loader />
+              ) : (
+                <TodoList
+                  todos={visibleTodos}
+                  getCurrentTodo={setCurrentTodo}
+                  isModalOpen={!!currentTodo}
+                />
+              )}
             </div>
           </div>
         </div>
