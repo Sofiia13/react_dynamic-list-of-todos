@@ -4,9 +4,10 @@ import { TodoItem } from '../TodoItem';
 
 type Props = {
   todos: Todo[];
+  getCurrentTodo: (todo: Todo) => void;
 };
 
-export const TodoList: React.FC<Props> = ({ todos }) => (
+export const TodoList: React.FC<Props> = ({ todos, getCurrentTodo }) => (
   <table className="table is-narrow is-fullwidth">
     <thead>
       <tr>
@@ -23,7 +24,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => (
 
     <tbody>
       {todos.map(todo => (
-        <TodoItem todo={todo} key={todo.id} />
+        <TodoItem todo={todo} key={todo.id} getCurrentTodo={getCurrentTodo} />
       ))}
       {/* <tr data-cy="todo" className="">
         <td className="is-vcentered">1</td>

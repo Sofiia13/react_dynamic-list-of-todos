@@ -3,9 +3,10 @@ import { Todo } from '../../types/Todo';
 
 type Props = {
   todo: Todo;
+  getCurrentTodo: (todo: Todo) => void;
 };
 
-export const TodoItem: React.FC<Props> = ({ todo }) => {
+export const TodoItem: React.FC<Props> = ({ todo, getCurrentTodo }) => {
   return (
     <tr data-cy="todo" className="">
       <td className="is-vcentered">{todo.id}</td>
@@ -24,7 +25,14 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
         </p>
       </td>
       <td className="has-text-right is-vcentered">
-        <button data-cy="selectButton" className="button" type="button">
+        <button
+          data-cy="selectButton"
+          className="button"
+          type="button"
+          onClick={() => {
+            getCurrentTodo(todo);
+          }}
+        >
           <span className="icon">
             <i className="far fa-eye" />
           </span>
